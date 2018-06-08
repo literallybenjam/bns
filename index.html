@@ -1,0 +1,499 @@
+---
+---
+<!DoCtYpE HTML>
+<HTML
+	Lang={{ site.data["@context"]["@language"] | default: "en" }}
+	Prefix="{% for namespace in site.data.bns["@context"] %}{% if namespace[1]["@id"] %}{% continue %}{% endif %}
+		{{ namespace[0] }}: {{ namespace[1] }}{% endfor %}
+	"
+>
+
+<TITLE>The BNS @ KIBI Gô</TITLE>
+<META Charset=utf-8>
+<LINK Rel=alternate Type=application/ld+json Href=./index.jsonld>
+
+<STYLE>
+#get {
+	Display: Block;
+	Position: Fixed;
+	Bottom: 1EM;
+	Right: 1EM;
+	Margin: 0;
+	Border: Medium Black Solid;
+	Padding: .5EM 1EM;
+	Max-Width: Calc(100% - 2EM);
+	Color: White;
+	Background: DarkSlateGrey;
+	Line-Height: 1;
+	Text-Align: Center;
+}
+*[Property="[schema:description]"] {
+	Display: Block;
+	Clear: Both;
+	Margin: 0 0 1EM;
+	Border: Medium Black Solid;
+	Padding: .5EM 1EM;
+	Color: White;
+	Background: DarkSlateGrey;
+}
+*[Property="[schema:description]"] + UL[Rel="[schema:hasPart]"] { Border-Top: None }
+*[Property="[schema:description]"] > PRE:Only-Child,
+*[Property="[schema:text]"] > ARTICLE > PRE:Only-Child,
+*[Property="[schema:text]"] > PRE:Only-Child {
+	Display: Inline;
+	Clear: Both;
+	Margin: 0;
+	Border: None;
+	Padding: 0;
+	Font: Inherit;
+	White-Space: Pre-Wrap;
+	Text-Align: Inherit;
+	Text-Align-Last: Inherit;
+}
+*[Property="[schema:name]"]::AFTER { Content: "”" }
+*[Property="[schema:name]"]::BEFORE { Content: "“" }
+H1 *[Property="[schema:name]"]::BEFORE,
+H1 *[Property="[schema:name]"]::AFTER { Content: None }
+*[Property="[schema:text]"] {
+	Display: Block;
+	Margin: 1.5EM;
+	Border: Medium DarkSlateGrey Solid;
+	Padding: 2EM 4EM;
+	Color: Black;
+	Background: White;
+	Text-Align: Justify;
+	Text-Align-Last: Center;
+	Overflow: Auto;
+}
+*[Property="[schema:text]"] > ARTICLE,
+*[Property="[schema:text]"] > TABLE { Margin: Auto }
+*[Rel="[schema:image]"] {
+	Display: Inline-Block;
+	Float: Left;
+	Margin: 0 -3EM 0 1EM;
+	Border: None;
+	Padding: 0;
+	Background-Position: Center;
+	Background-Size: Contain;
+	Background-Repeat: No-Repeat;
+	Width: 2EM;
+	Height: 1EM;
+}
+*|*:link,
+*|*:visited { Color: DarkSlateGrey }
+*|*:link:hover,
+*|*:visited:hover { Color: SlateGrey }
+*|*:link:active,
+*|*:visited:active { Color: Black }
+.ANCHOR {
+	Display: Inline-Block;
+	Margin: 0 -1EM 0 0;
+	Width: 1EM;
+	Text-Align: Left;
+	Visibility: Hidden;
+}
+.STRINGID::AFTER { Content: "_" }
+BODY {
+	Padding-Bottom: 4EM;
+	Color: DarkSlateGrey;
+	Background: SlateGrey;
+}
+DETAILS {
+	Display: Block;
+	Margin: 0;
+	Border: None;
+	Padding: 0;
+	Color: DarkSlateGrey;
+	Background: SlateGrey;
+}
+DETAILS::AFTER {
+	Display: Block;
+	Clear: Both;
+	Content: "";
+}
+DETAILS > DL {
+	Display: Block;
+	Margin: 0;
+	Border: Medium Black Solid;
+	Padding: 0;
+	Color: DarkSlateGrey;
+	Background: Repeating-Linear-Gradient(135DEG, DarkSlateGrey, DarkSlateGrey 1PX, LightSlateGrey 1.82842PX, LightSlateGrey 2.41421PX, DarkSlateGrey 3.24263PX);
+	Font-Size: 1EM;
+}
+DETAILS > DL + DIV[Property="[schema:description]"] { Border-Top: None }
+DETAILS > DL > DD {
+	Display: Block;
+	Box-Sizing: Border-Box;
+	Margin: 0 0 0 Auto;
+	Border: None;
+	Padding: .5EM;
+	Width: Calc(100% - 11EM);
+	Min-Width: 50%;
+	Color: DarkSlateGrey;
+	Background: White;
+}
+DETAILS > DL > DD ~ DD,
+DETAILS > DL > DD ~ DT { Border-Top: Thin DarkSlateGrey Solid }
+DETAILS > DL > DT {
+	Display: Inline-Block;
+	Float: Left;
+	Clear: Both;
+	Box-Sizing: Border-Box;
+	Margin: 0 .5EM 0 0;
+	Border: None;
+	Padding: .5EM;
+	Color: White;
+	Background: DarkSlateGrey;
+	Width: 50%;
+	Max-Width: 11EM;
+}
+DETAILS > DL > DT *|*:link,
+DETAILS > DL > DT *|*:visited,
+*[Property="[schema:description]"] *|*:link,
+*[Property="[schema:description]"] *|*:visited { Color: White }
+DETAILS > DL > DT *|*:link:hover,
+DETAILS > DL > DT *|*:visited:hover,
+*[Property="[schema:description]"] *|*:link:hover,
+*[Property="[schema:description]"] *|*:visited:hover { Color: White }
+DETAILS > DL > DT *|*:link:active,
+DETAILS > DL > DT *|*:visited:active,
+*[Property="[schema:description]"] *|*:link:active,
+*[Property="[schema:description]"] *|*:visited:active { Color: LightSlateGrey }
+DETAILS > DL > DT + DD + DT { Border-Top-Color: White }
+DETAILS > DL::AFTER {
+	Display: Block;
+	Clear: Both;
+	Content: "";
+}
+DETAILS[Open] > SUMMARY:Only-Child { Border-Bottom: Medium CurrentColor Solid }
+DETAILS[TypeOf~="bns:Corpus"] > SUMMARY {
+	Padding: 1EM 0;
+	Font-Size: XX-Large;
+}
+DL {
+	Text-Align: Left;
+	Text-Align-Last: Auto;
+}
+HR {
+	Border-Color: CurrentColor;
+	Width: 90%;
+	Height: 5px;
+	Color: DarkSlateGrey;
+	Background: CurrentColor;
+}
+SUMMARY {
+	Display: Block;
+	Margin: 0;
+	Border: Medium CurrentColor Solid;
+	Border-Bottom: Thick CurrentColor Double;
+	Color: DarkSlateGrey;
+	Background: White;
+	Text-Align: Center;
+	Overflow: Auto;
+	Cursor: Pointer;
+}
+SUMMARY:Hover .ANCHOR { Visibility: Visible }
+SUMMARY > *|*:link,
+SUMMARY > *|*:visited,
+SUMMARY > *|*:link:hover,
+SUMMARY > *|*:visited:hover,
+SUMMARY > *|*:link:active,
+SUMMARY > *|*:visited:active {
+	Color: Inherit;
+	Text-Decoration: None;
+}
+UL[Rel="[schema:hasPart]"] {
+	Display: Block;
+	Clear: Both;
+	Margin: 0;
+	Border: None;
+	Border-Top: Medium DarkSlateGrey Solid;
+	Padding: 1EM 2EM;
+	List-Style-Type: None;
+}
+DETAILS[Open] > SUMMARY { Border-Bottom: None }
+UL[Rel="[schema:hasPart]"] > LI:Not(:First-Child) > DETAILS > SUMMARY { Border-Top: None }
+UL[Rel="[schema:hasPart]"] > LI:Not(:Last-Child) > DETAILS[Open] { Border-Bottom: Medium CurrentColor Solid }
+UL[Rel="[schema:hasPart]"] > LI:Not(:Last-Child) > DETAILS[Open] > SUMMARY:Only-Child { Border-Bottom: None }
+</STYLE>
+<STYLE Media=print>
+DETAILS:Not([Open]) { Display: None }
+</STYLE>
+
+<LABEL ID=get>
+	<INPUT
+		Id=get.ck
+		Type=checkbox
+	>
+	Fetch titles for foreign URIs
+</LABEL>
+
+{% include division.html division=site.data.bns %}
+
+<SCRIPT>
+void {
+
+	fetchTitlesFor: function fetchTitlesFor (details) {
+
+		if            (details)
+		if            (details.open)
+		void function (links , h , i , l , u) {
+
+			if  (links)
+			for (i = 0 ; i < links.length ; i++) {
+
+				if       (l = links.item(i))
+				if       (h = l.href)
+				if       (l.childNodes.length == 1)
+				if       (h.substr(0 , (u = this.nkn).length) == u)
+				continue
+				else if  (h.substr(0 , (u = this.url).length) == u)
+				if      (h[u.length] == "#")
+				if      (h = h.substr(u.length + 1))
+				if      (h = document.getElementById(h))
+				void    (this.setTitleTo(l, this.getTitleFor(h)))
+				else    (void{})
+				else    (void{})
+				else    (void{})
+				else if (document.getElementById("get.ck").checked)
+				if      (h.substr(0 , (u = this.wc).length) == u)
+				if      (h = h.substr(u.length))
+				void    (this.getTitle(l , this.wcLD + h + ".rdf"))
+				else    (void{})
+				else if (h.substr(0 , (u = this.wd).length) == u)
+				if      (h = h.substr(u.length))
+				void    (this.getTitle(l , this.wdLD + h))
+				else    (void{})
+				else    (this.getTitle(l, h))
+
+			}
+
+		}.call(this , details.querySelectorAll(this.linkQuery))
+
+	},
+
+	getTitle: function getTitle (link, href) {
+
+		void function (req) {
+
+			void (req.addEventListener("load" , this.handle(link)))
+			void (req.open("GET" , href))
+			void (req.setRequestHeader("Accept" , this.xmlTypes))
+			void (req.responseType = "document")
+			void (req.send())
+
+		}.call(this, new XMLHttpRequest)
+
+	},
+
+	getTitleFor : function getTitleFor (details) {
+
+		if              (details)
+		return function (parent, up, summary, val) {
+
+			if     (up = details.parentElement)
+			if     (up.tagName.toUpperCase() == "LI")
+			if     (up = up.parentElement)
+			if     (up.getAttribute("Rel") == "[schema:hasPart]")
+			if     (up = up.parentElement)
+			if     (up.tagName.toUpperCase() == "DETAILS")
+			if     (parent = getTitleFor(up))
+			void   (parent += " :: ")
+			else   (parent = "")
+			if     (summary = details.firstElementChild)
+			if     (summary.tagName.toUpperCase() == "SUMMARY")
+			if     (summary.title)
+			return (parent + summary.title)
+
+		}.call(this)
+
+	},
+
+	getTitleFrom : function getTitleFrom (doc , uri) {
+
+		if              (doc)
+		if              (uri)
+		return function (r , x , y) {
+
+			void   (x = "//rdf:Description[@rdf:about='")
+			void   (x += uri)
+			void   (y = x)
+			void   (x += "']/schema:name[@xml:lang='en'][last()]")
+			void   (y += "']/schema:name[not(@xml:lang)][last()]")
+			if     (r = doc.evaluate(x , doc , this.ns , 9 , null))
+			if     (r = r.singleNodeValue)
+			return (r.textContent)
+			if     (r = doc.evaluate(y , doc , this.ns , 9 , null))
+			if     (r = r.singleNodeValue)
+			return (r.textContent)
+
+		}.call(this)
+
+	},
+
+	handle : function handle (obj) {
+
+		return (this.handleEvent.bind(this , obj))
+
+	},
+
+	handleHash : function handleHash () {
+
+		void function (target) {
+
+			if   (target = this.resolveHash())
+			void (this.open(target) , target.scrollIntoView())
+
+		}.call(this)
+
+	},
+
+	handleEvent : function handleEvent (maybeEvent , elseEvent) {
+
+		switch (elseEvent ? elseEvent.type : maybeEvent.type) {
+
+			case   ("hashchange"):
+			return (this.handleHash())
+			case   ("change"):
+			return (this.fetchTitlesFor(this.resolveHash()))
+			case   ("load"):
+			return (this.setTitle(maybeEvent , elseEvent.target))
+			case   ("toggle"):
+			return (this.fetchTitlesFor(maybeEvent.target))
+
+		}
+
+	},
+
+	init : function init () {
+
+		void          (this.listen("hashchange" , this))
+		void function (details , d , i) {
+
+			for (i = 0 ; i < details.length ; i++) {
+
+				if   (d = details.item(i))
+				void (d.addEventListener("toggle", this))
+
+			}
+
+		}.call(this, document.querySelectorAll("DETAILS"))
+		void function (check) {
+
+			void (check.addEventListener("change" , this))
+
+		}.call(this, document.getElementById("get.ck"))
+		void          (this.handleHash())
+
+	},
+
+	linkQuery: (":Scope > DL > DD > A[Href]"),
+
+	listen : (this.addEventListener.bind(this)),
+
+	makeCurie : function makeCurie (curie) {
+
+		return function (elt) {
+
+			void   (elt.textContent = "(" + curie + ")")
+			return (elt)
+
+		}.call(this , document.createElement("SMALL"))
+
+	},
+
+	makeTitle : function makeTitle (title) {
+
+		return function (elt) {
+
+			void   (elt.textContent = title)
+			return (elt)
+
+		}.call(this , document.createElement("CITE"))
+
+	},
+
+	nkn : ("{{ site.data["@context"]["⁇"] | default: "about:blank#" }}"),
+
+	ns : function ns (prefix) {
+
+		return {
+
+			rdf : ("http://www.w3.org/1999/02/22-rdf-syntax-ns#"),
+
+			schema : ("http://schema.org/"),
+
+			xml : ("http://www.w3.org/XML/1998/namespace"),
+
+		}[prefix] || null
+
+	},
+
+	open : function open (target) {
+
+		if    (target instanceof Element)
+		do if (target.tagName.toUpperCase() == "DETAILS")
+		void  (target.open = true)
+		while (target = target.parentElement)
+
+	},
+
+	resolveHash : function resolveHash () {
+
+		return function (element , hash , index) {
+
+			if      (hash = decodeURIComponent(location.hash))
+			if      (hash = hash[0] != "#" ? hash : hash.substr(1))
+			do if   (element = document.getElementById(hash))
+			return  (element)
+			else if ((index = hash.lastIndexOf(":")) != -1)
+			void    (hash = hash.substr(0 , index))
+			else    (hash = null)
+			while   (hash)
+
+		}.call(this)
+
+	},
+
+	setTitle : function setTitle (link , request) {
+
+		if            (request)
+		void function (h , r)       {
+
+			if   (r = request.responseXML)
+			void (this.setTitleTo(link, this.getTitleFrom(r , h)))
+
+		}.call(this, link.href)
+
+	},
+
+	setTitleTo : function setTitleTo (link , title) {
+
+		if            (title)
+		if            (link)
+		if            (link.childNodes.length == 1)
+		void function (curie)                       {
+
+			void (link.textContent = "")
+			void (link.appendChild(this.makeTitle(title)))
+			void (link.appendChild(document.createTextNode(" ")))
+			void (link.appendChild(this.makeCurie(curie)))
+
+		}.call(this , link.textContent)
+
+	},
+
+	url : ("{{ site.data.bns["@id"] }}"),
+
+	wc : ("http://www.worldcat.org/oclc/"),
+
+	wcLD : ("http://experiment.worldcat.org/oclc/"),
+
+	wd : ("http://www.wikidata.org/entity/"),
+
+	wdLD : ("https://www.wikidata.org/wiki/Special:EntityData/"),
+
+	xmlTypes : ("application/rdf+xml"),
+
+}.init()
+</SCRIPT>

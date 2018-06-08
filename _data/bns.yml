@@ -1,0 +1,73 @@
+---
+"@context":
+  "@language": en
+  oclc: http://www.worldcat.org/oclc/
+  rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  schema: http://schema.org/
+  wikidata: http://www.wikidata.org/entity/
+  xsd: http://www.w3.org/2001/XMLSchema#
+  contentRating:
+    "@id": schema:contentRating
+    "@type": xsd:string
+  copyrightYear:
+    "@id": schema:copyrightYear
+    "@type": xsd:gYear
+  description:
+    "@id": schema:description
+    "@type": rdf:XMLLiteral
+  fileFormat:
+    "@id": schema:fileFormat
+    "@type": xsd:string
+  genre:
+    "@id": schema:genre
+    "@type": xsd:string
+  hasPart:
+    "@id": schema:hasPart
+    "@type": "@id"
+  identifier:
+    "@id": schema:identifier
+    "@language": zxx
+  image:
+    "@id": schema:image
+    "@type": "@id"
+  inLanguage:
+    "@id": schema:inLanguage
+    "@type": xsd:language
+  isAccessibleForFree:
+    "@id": schema:isAccessibleForFree
+    "@type": xsd:boolean
+  isBasedOn:
+    "@id": schema:isBasedOn
+    "@type": "@id"
+  isFamilyFriendly:
+    "@id": schema:isFamilyFriendly
+    "@type": xsd:boolean
+  isPartOf:
+    "@id": schema:isPartOf
+    "@type": "@id"
+  keywords:
+    "@id": schema:keywords
+    "@type": xsd:string
+  license:
+    "@id": schema:license
+    "@type": "@id"
+  name:
+    "@id": schema:name
+    "@type": xsd:string
+  position:
+    "@id": schema:position
+    "@type": xsd:string
+  seeAlso:
+    "@id": rdfs:seeAlso
+    "@type": "@id"
+  text:
+    "@id": schema:text
+    "@type": rdf:XMLLiteral
+  textMap:
+    "@id": schema:text
+    "@container": "@language"
+    "@type": rdf:XMLLiteral
+  url:
+    "@id": scheme:url
+    "@type": "@id"

@@ -1,0 +1,34 @@
+{% assign shortname = nil %}{% assign index = nil %}{% assign identchars = include.division.position | split: "" %}{% for char in identchars %}{% unless "0123456789" contains char %}{% unless shortname %}{% assign shortname = include.division.position %}{% endunless %}{% break %}{% endunless %}{% if forloop.last and index == nil %}{% assign index = include.division.position | plus: 0 %}{% endif %}{% endfor %}{% capture index %}{% case index %}{% when 0 %}0{% when 12 %}ⅻ{% when 11 %}ⅺ{% else %}{% assign n = index | divided_by: 1000 | minus: 1 %}{% for t in (0..n) %}ⅿ{% endfor %}{% assign n = index | modulo: 1000 | divided_by: 100 %}{% case n %}{% when 9 %}ⅽⅿ{% when 8 %}ⅾⅽⅽⅽ{% when 7 %}ⅾⅽⅽ{% when 6 %}ⅾⅽ{% when 5 %}ⅾ{% when 4 %}ⅽⅾ{% when 3 %}ⅽⅽⅽ{% when 2 %}ⅽⅽ{% when 1 %}ⅽ{% endcase %}{% assign n = index | modulo: 100 | divided_by: 10 %}{% case n %}{% when 9 %}ⅹⅽ{% when 8 %}ⅼⅹⅹⅹ{% when 7 %}ⅼⅹⅹ{% when 6 %}ⅼⅹ{% when 5 %}ⅼ{% when 4 %}ⅹⅼ{% when 3 %}ⅹⅹⅹ{% when 2 %}ⅹⅹ{% when 1 %}ⅹ{% endcase %}{% assign n = index | modulo: 10 %}{% case n %}{% when 9 %}ⅸ{% when 8 %}ⅷ{% when 7 %}ⅶ{% when 6 %}ⅵ{% when 5 %}ⅴ{% when 4 %}ⅳ{% when 3 %}ⅲ{% when 2 %}ⅱ{% when 1 %}ⅰ{% endcase %}{% endcase %}{% endcapture %}<SUMMARY Title=Concept&#32;{% if shortname %}{{ shortname }}_{% else %}{{ index }}{% endif %}>
+<H4>{% if include.division["image"] %}
+<A
+	Href={{ include.division["image"] }}
+	Rel=[schema:image]
+	Style=Background-Image:Url(&quot;{{ include.division["image"] }}&quot;)
+	Target=_blank
+	Title=Cover&#32;image
+></A>{% endif %}
+Part{% if shortname %}
+<SPAN
+	Class=STRINGID
+	Lang=zxx
+	Property=[schema:position]
+>{{ shortname }}</SPAN>{% else %}
+<SPAN
+	Content={{ index }}
+	Lang=zxx
+	Property=[schema:position]
+>{{ index }}</SPAN>{% endif %}{% if include.division.name %}
+–
+<SPAN Property=[schema:name]>{{ include.division.name }}</SPAN>{% endif %}{% if include.division["identifier"] %}
+<SMALL
+	Content={{ include.division.identifier }}
+	Lang=zxx
+	Property=[schema:identifier]
+>[{{ include.division.identifier | remove_first: site.data.bns["identifier"] | remove_first: ":" }}]</SMALL>{% endif %}{% if include.division["@id"] contains site.prefix %}
+<A
+	Class=ANCHOR
+	Href=#{{ include.division["@id"] | remove_first: site.prefix | xml_escape | replace: "'", "&apos;" }}
+>⚓&#xFE0E;</A>{% endif %}
+</H4>
+</SUMMARY>
+{%- comment %}Strip whitespace{% endcomment -%}

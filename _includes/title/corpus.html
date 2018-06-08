@@ -1,0 +1,12 @@
+<SUMMARY>
+<P>
+{% if include.division.name %}
+{{ include.division.name | xml_escape }}
+<BR>{% endif %}
+<SPAN
+	Content={{ include.division.identifier }}
+	Lang=zxx
+	Rel=[schema:identifier]
+>{{ include.division.identifier | replace_first: ",", " (" | append: ")" | xml_escape }}</SPAN>
+</SUMMARY>
+{%- comment %}Strip whitespace{% endcomment -%}

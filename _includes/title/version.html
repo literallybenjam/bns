@@ -1,0 +1,33 @@
+{% assign shortname = nil %}{% assign index = nil %}{% assign identchars = include.division.position | split: "" %}{% for char in identchars %}{% unless "0123456789" contains char %}{% unless shortname %}{% assign shortname = include.division.position %}{% endunless %}{% break %}{% endunless %}{% if forloop.last and index == nil %}{% assign index = include.division.position | plus: 0 %}{% endif %}{% endfor %}<SUMMARY Title=Concept&#32;{% if shortname %}{{ shortname }}_{% else %}{{ index }}{% endif %}>
+<H4>{% if include.division["image"] %}
+<A
+	Href={{ include.division["image"] }}
+	Rel=[schema:image]
+	Style=Background-Image:Url(&quot;{{ include.division["image"] }}&quot;)
+	Target=_blank
+	Title=Cover&#32;image
+></A>{% endif %}
+Version{% if shortname %}
+<SPAN
+	Class=STRINGID
+	Lang=zxx
+	Property=[schema:position]
+>{{ shortname }}</SPAN>{% else %}
+<SPAN
+	Content={{ index }}
+	Lang=zxx
+	Property=[schema:position]
+>{{ index }}</SPAN>{% endif %}{% if include.division.name %}
+–
+<SPAN Property=[schema:name]>{{ include.division.name }}</SPAN>{% endif %}{% if include.division["identifier"] %}
+<SMALL
+	Content={{ include.division.identifier }}
+	Lang=zxx
+	Property=[schema:identifier]
+>[{{ include.division.identifier | remove_first: site.data.bns["identifier"] | remove_first: ":" }}]</SMALL>{% endif %}{% if include.division["@id"] contains site.prefix %}
+<A
+	Class=ANCHOR
+	Href=#{{ include.division["@id"] | remove_first: site.prefix | xml_escape | replace: "'", "&apos;" }}
+>⚓&#xFE0E;</A>{% endif %}
+</SUMMARY>
+{%- comment %}Strip whitespace{% endcomment -%}

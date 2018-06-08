@@ -1,0 +1,25 @@
+{% assign shortname = include.division.name %}{% assign index = include.division.position | plus: 0 %}{% capture index %}{% if index < 10 %}00{% elsif index < 100 %}0{% endif %}{{ index }}{% endcapture %}<SUMMARY Title={{ index }}&#32;{{ shortname }}>
+<H1>{% if include.division["image"] %}
+<A
+	Href={{ include.division["image"] }}
+	Rel=[schema:image]
+	Style=Background-Image:Url(&quot;{{ include.division["image"] }}&quot;)
+	Target=_blank
+	Title=Cover&#32;image
+></A>{% endif %}
+<SPAN
+	Content={{ index }}
+	Lang=zxx
+	Property=[schema:position]&#32;[schema:identifier]
+>{{ index }}</SPAN>
+<SPAN
+	Lang=zxx
+	Property=[schema:name]
+>{{ shortname }}</SPAN>{% if include.division["@id"] contains site.prefix %}
+<A
+	Class=ANCHOR
+	Href=#{{ include.division["@id"] | remove_first: site.prefix | xml_escape | replace: "'", "&apos;" }}
+>⚓&#xFE0E;</A>{% endif %}
+</H1>
+</SUMMARY>
+{%- comment %}Strip whitespace{% endcomment -%}

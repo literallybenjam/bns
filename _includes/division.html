@@ -1,0 +1,134 @@
+<DETAILS
+	About={{ include.division["@id"] | xml_escape | replace: "'", "&apos;" }}
+	Id={{ include.division["@id"] | remove_first: site.prefix | xml_escape | replace: "'", "&apos;" }}{% if include.division["@type"] == "bns:Corpus" %}
+	Open{% endif %}
+	TypeOf={{ include.division["@type"] | join: " " | xml_escape | replace: " ", "&#x20;" }}{% unless include.division["@type"] contains "schema:CreativeWork" %}&#x20;schema:CreativeWork{% endunless %}
+>
+
+{% if include.division["@type"] == "bns:Part" %}{% include title/part.html division=include.division %}{% elsif include.division["@type"] == "bns:Draft" %}{% include title/draft.html division=include.division %}{% elsif include.division["@type"] == "bns:Version" %}{% include title/version.html division=include.division %}{% elsif include.division["@type"] == "bns:Volume" %}{% include title/volume.html division=include.division %}{% elsif include.division["@type"] == "bns:Concept" %}{% include title/concept.html division=include.division %}{% elsif include.division["@type"] == "bns:Project" %}{% include title/project.html division=include.division %}{% elsif include.division["@type"] == "bns:Corpus" %}{% include title/corpus.html division=include.division %}{% endif %}{% if include.division["isPartOf"] %}
+
+<A{% assign parent = include.division["isPartOf"] %}
+	Href={% include expanded.html curie=parent %}
+	Rel=[schema:isPartOf]
+	Style=Display:None
+>Parent division</A>{% endif %}{% assign opened = false %}{% assign context = site.data.bns["@context"] %}{% assign specialkeys = "@context @id @type description hasPart identifier image isPartOf name position text" | split: " " %}{% for keyval in include.division %}{% assign key = keyval[0] %}{% assign vals = keyval[1] %}{% unless vals[0] %}{% assign vals = vals | append: "" %}{% endunless %}{% if specialkeys contains key %}{% continue %}{% endif %}{% unless opened %}
+
+<DL>{% assign opened = true %}{% endunless %}{% assign keydef = context[key] %}{% assign keyid = keydef["@id"] | key %}{% assign keytype = keydef["@type"] %}
+
+<DT>
+	{{ site.data.names[key] | default: key | xml_escape }}{% for val in vals %}{% case keytype %}{% when "@id" %}
+<DD>	<A
+		Href={% include expanded.html curie=val %}
+		Rel=[{{ keyid | xml_escape | replace: "'", "&apos;" }}]
+	>{{ val | xml_escape }}</A>{% when "xsd:boolean" %}
+<DD
+	Content={% if val != "false" %}true{% else %}false{% endif %}
+	DataType=[xsd:boolean]
+	Property=[{{ keyid | xml_escape | replace: "'", "&apos;" }}]
+>	{% if val != "false" %}Yes{% else %}No{% endif %}{% when "xsd:language" %}
+<DD
+	Content={{ val | xml_escape | replace: "'", "&apos;" }}
+	DataType=[xsd:language]
+	Property=[{{ keyid | xml_escape | replace: "'", "&apos;" }}]
+>	{{ site.data.names[val] | default: val | xml_escape }}{% else %}
+<DD{% if keytype %}
+	DataType=[{{ keytype | xml_escape | replace: "'", "&apos;" }}]{% endif %}
+	Property=[{{ keyid | xml_escape | replace: "'", "&apos;" }}]
+>	{{ val | xml_escape }}{% endcase %}{% endfor %}{% endfor %}{% if opened %}
+
+</DL>{% endif %}{% if include.division.description %}
+
+<DIV
+	DataType=[rdf:XMLLiteral]
+	Property=[schema:description]
+>{{ include.division.description }}</DIV>{% endif %}{% if include.division.text %}
+
+<DIV
+	DataType=[rdf:XMLLiteral]
+	Property=[schema:text]
+>{{ include.division.text }}</DIV>{% elsif include.division.textMap %}
+
+<SELECT Id={{ include.division["@id"] | remove_first: site.prefix | xml_escape | replace: "'", "&apos;" }}/lang>{% for text in include.division.textMap %}{% assign lang = text[0] %}
+<OPTION{% if forloop.first %}
+	Selected{% endif %}
+	Value=lang
+>{{ names[lang] }}{% endfor %}
+
+<SCRIPT>
+void {
+
+	activate : function activate () {
+
+		void function (child, children, i, lang) {
+
+			if (lang = this.child("/lang").value)
+			if (map = this.child("/_map").children)
+			for (i = 0 ; child ; i++ , child = map.children[i]) {
+
+				if   (child.id != this.parent + "/" + lang))
+				void (child.setAttribute("hidden", ""))
+				else (child.removeAttribute("hidden"))
+
+			}
+
+		}.call(this)
+
+	},
+
+	addListener : function addListener () {
+
+		void (this.child("/lang").addEventListener("change", this))
+
+	},
+
+	child : function child (suffix) {
+
+		return (document.getElementById(this.parent + suffix) || {})
+
+	},
+
+	handleEvent : function handleEvent (event) {
+
+		switch (event.type) {
+
+			case ("change"):
+			void (this.activate())
+
+		}
+
+	},
+
+	init : function init () {
+
+		void (this.addListener(), this.activate())
+
+	},
+
+	parent : ("{{ include.division["@id"] | remove_first: site.prefix }}"),
+
+}.init()
+</SCRIPT>
+
+<DIV
+	Class=LANGUAGEMAP
+	Id={{ include.division["@id"] | remove_first: site.prefix | xml_escape | replace: "'", "&apos;" }}/_map
+>{% for text in include.division.textMap %}
+
+<DIV
+	DataType=[rdf:XMLLiteral]
+	Id={{ include.division["@id"] | remove_first: site.prefix | xml_escape | replace: "'", "&apos;" }}/{{ text[0] }}
+	Lang={{ text[0] }}
+	Property=[schema:text]
+>{{ text[1] }}</DIV>{% endfor %}
+
+</DIV>{% endif %}{% if include.division.hasPart %}{% assign parts = include.division.hasPart | sort: "identifier" %}
+
+<UL Rel=[schema:hasPart]>{% for part in parts %}
+
+<LI>
+{% include division.html division=part %}{% endfor %}
+
+</UL>{% endif %}
+
+</DETAILS>
+{%- comment %}Strip whitespace{% endcomment -%}

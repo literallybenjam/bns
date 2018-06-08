@@ -1,0 +1,12 @@
+contentRating      : 'Rating:'
+copyrightYear      : 'Year:'
+fileFormat         : 'Format:'
+genre              : 'Genre:'
+inLanguage         : 'Language:'
+isAccessibleForFree: Freely available?
+isBasedOn          : 'Inspired by:'
+isFamilyFriendly   : Clean?
+keywords           : 'Tagged:'
+license            : 'License:'
+seeAlso            : 'See also:'
+url                : 'Available here:'
